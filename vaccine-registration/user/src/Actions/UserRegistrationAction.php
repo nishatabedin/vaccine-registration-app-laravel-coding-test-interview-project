@@ -2,35 +2,29 @@
 
 namespace VaccineRegistration\User\Actions;
 
-use Illuminate\Support\Facades\DB;
+use VaccineRegistration\User\Services\UserService;
 use VaccineRegistration\User\DTO\UserRegistrationDTO;
-use VaccineRegistration\User\Services\RegistrationService;
 use VaccineRegistration\User\Http\Requests\UserRegistrationRequest;
+use VaccineRegistration\Common\Contracts\ScheduleVaccinationInterface;
 
 class UserRegistrationAction
 {
-    protected $registrationService;
+    protected $userService;
+    protected $scheduleVaccinationService;
 
-    public function __construct(RegistrationService $registrationService)
+    public function __construct(UserService $userService, ScheduleVaccinationInterface $scheduleVaccinationService)
     {
-        $this->registrationService = $registrationService;
+        $this->userService = $userService;
+        $this->scheduleVaccinationService = $scheduleVaccinationService;
     }
     
     public function execute(UserRegistrationRequest $request)
     {
         $userDto = UserRegistrationDTO::fromRequest($request);
+        $user = $this->userService->registerUser($userDto);
 
-        DB::transaction(function () use ($userDto) {
-
-            $user = $this->registrationService->registerUser($userDto);
-          
-            //To Do: Schedule vaccination
-            
-        });
-
-
-       
-
-       
+        // Dispatch the job to schedule vaccination
+        $this->scheduleVaccinationService->scheduleVaccinationJob($user->id, $request->vaccine_center_id);
+        return $user;
     }
 }

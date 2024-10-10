@@ -1,0 +1,24 @@
+{
+	"name": "vaccine-registration/common",
+	"description": "",
+	"type": "library",
+	"version": "1.0",
+	"license": "proprietary",
+	"require": {},
+	"autoload": {
+		"psr-4": {
+			"VaccineRegistration\\Common\\": "src/",
+			"VaccineRegistration\\Common\\Tests\\": "tests/",
+			"VaccineRegistration\\Common\\Database\\Factories\\": "database/factories/",
+			"VaccineRegistration\\Common\\Database\\Seeders\\": "database/seeders/"
+		}
+	},
+	"minimum-stability": "stable",
+	"extra": {
+		"laravel": {
+			"providers": [
+				"VaccineRegistration\\Common\\Providers\\CommonServiceProvider"
+			]
+		}
+	}
+}

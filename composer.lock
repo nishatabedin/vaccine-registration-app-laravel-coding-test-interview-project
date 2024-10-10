@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "39e292d1d70258b10fca316ce62f6f73",
+    "content-hash": "7e90974f5eab6375b364b6735a28dc53",
     "packages": [
         {
             "name": "brick/math",
@@ -6634,6 +6634,38 @@
             "time": "2023-12-08T13:03:43+00:00"
         },
         {
+            "name": "vaccine-registration/common",
+            "version": "1.0",
+            "dist": {
+                "type": "path",
+                "url": "vaccine-registration/common",
+                "reference": "1778541484ffa32bb6b8596f13379efab50fc572"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "VaccineRegistration\\Common\\Providers\\CommonServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "VaccineRegistration\\Common\\": "src/",
+                    "VaccineRegistration\\Common\\Tests\\": "tests/",
+                    "VaccineRegistration\\Common\\Database\\Factories\\": "database/factories/",
+                    "VaccineRegistration\\Common\\Database\\Seeders\\": "database/seeders/"
+                }
+            },
+            "license": [
+                "proprietary"
+            ],
+            "transport-options": {
+                "symlink": true,
+                "relative": true
+            }
+        },
+        {
             "name": "vaccine-registration/user",
             "version": "1.0",
             "dist": {
@@ -9064,5 +9096,5 @@
         "php": "^8.2"
     },
     "platform-dev": [],
-    "plugin-api-version": "2.3.0"
+    "plugin-api-version": "2.6.0"
 }
