@@ -2,12 +2,18 @@
     "name": "laravel/laravel",
     "type": "project",
     "description": "The skeleton application for the Laravel framework.",
-    "keywords": ["laravel", "framework"],
+    "keywords": [
+        "laravel",
+        "framework"
+    ],
     "license": "MIT",
     "require": {
         "php": "^8.2",
+        "internachi/modular": "^2.2",
         "laravel/framework": "^11.9",
-        "laravel/tinker": "^2.9"
+        "laravel/tinker": "^2.9",
+        "vaccine-registration/user": "*",
+        "vaccine-registration/vaccine-center": "*"
     },
     "require-dev": {
         "fakerphp/faker": "^1.23",
@@ -61,5 +67,14 @@
         }
     },
     "minimum-stability": "stable",
-    "prefer-stable": true
+    "prefer-stable": true,
+    "repositories": [
+        {
+            "type": "path",
+            "url": "vaccine-registration/*",
+            "options": {
+                "symlink": true
+            }
+        }
+    ]
 }

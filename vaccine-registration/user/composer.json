@@ -1,0 +1,24 @@
+{
+	"name": "vaccine-registration/user",
+	"description": "",
+	"type": "library",
+	"version": "1.0",
+	"license": "proprietary",
+	"require": {},
+	"autoload": {
+		"psr-4": {
+			"VaccineRegistration\\User\\": "src/",
+			"VaccineRegistration\\User\\Tests\\": "tests/",
+			"VaccineRegistration\\User\\Database\\Factories\\": "database/factories/",
+			"VaccineRegistration\\User\\Database\\Seeders\\": "database/seeders/"
+		}
+	},
+	"minimum-stability": "stable",
+	"extra": {
+		"laravel": {
+			"providers": [
+				"VaccineRegistration\\User\\Providers\\UserServiceProvider"
+			]
+		}
+	}
+}

@@ -1,0 +1,24 @@
+{
+	"name": "vaccine-registration/vaccine-center",
+	"description": "",
+	"type": "library",
+	"version": "1.0",
+	"license": "proprietary",
+	"require": {},
+	"autoload": {
+		"psr-4": {
+			"VaccineRegistration\\VaccineCenter\\": "src/",
+			"VaccineRegistration\\VaccineCenter\\Tests\\": "tests/",
+			"VaccineRegistration\\VaccineCenter\\Database\\Factories\\": "database/factories/",
+			"VaccineRegistration\\VaccineCenter\\Database\\Seeders\\": "database/seeders/"
+		}
+	},
+	"minimum-stability": "stable",
+	"extra": {
+		"laravel": {
+			"providers": [
+				"VaccineRegistration\\VaccineCenter\\Providers\\VaccineCenterServiceProvider"
+			]
+		}
+	}
+}
