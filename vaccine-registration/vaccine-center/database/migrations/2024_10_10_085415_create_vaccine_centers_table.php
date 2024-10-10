@@ -11,12 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('users', function (Blueprint $table) {
+        Schema::create('vaccine_centers', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('nid')->unique();
             $table->string('name');
-            $table->string('email')->unique();
-            $table->enum('status', ['registered', 'Not scheduled', 'Scheduled', 'Vaccinated'])->default('registered');
+            $table->integer('daily_limit');
             $table->timestamps();
         });
     }
@@ -26,6 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('users');
+        Schema::dropIfExists('vaccine_centers');
     }
 };

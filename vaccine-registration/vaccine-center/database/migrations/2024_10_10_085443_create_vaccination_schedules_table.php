@@ -11,13 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('users', function (Blueprint $table) {
+        Schema::create('vaccination_schedules', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('nid')->unique();
-            $table->string('name');
-            $table->string('email')->unique();
-            $table->enum('status', ['registered', 'Not scheduled', 'Scheduled', 'Vaccinated'])->default('registered');
+            $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
+            $table->foreignId('vaccine_center_id')->constrained('vaccine_centers')->onDelete('cascade');
+            $table->date('scheduled_date');
             $table->timestamps();
+
+            $table->unique(['user_id', 'scheduled_date']);
         });
     }
 
@@ -26,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('users');
+        Schema::dropIfExists('vaccination_schedules');
     }
 };
