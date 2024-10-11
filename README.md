@@ -155,9 +155,9 @@ Example for `database` cache driver:
 CACHE_STORE=database
 ```
 
-### 11. Future Requirement: Adding SMS Notifications
+### 12. Future Requirement: Adding SMS Notifications
 
-11.1) Extend the NotificationInterface: The current NotificationInterface supports email notifications. To include SMS, extend the interface to add an additional method for sending SMS notifications. This ensures that any service implementing the interface will also handle SMS.
+12.1) Extend the NotificationInterface: The current NotificationInterface supports email notifications. To include SMS, extend the interface to add an additional method for sending SMS notifications. This ensures that any service implementing the interface will also handle SMS.
 
 ```bash
 interface NotificationInterface
@@ -168,7 +168,7 @@ interface NotificationInterface
 
 ```
 
-11.2) Update NotificationService: Modify the NotificationService class to implement the notifySMS method. This method will handle the actual logic of sending SMS notifications.
+12.2) Update NotificationService: Modify the NotificationService class to implement the notifySMS method. This method will handle the actual logic of sending SMS notifications.
 
 ```bash
 public function notifySMS(int $userId, string $message)
@@ -182,7 +182,7 @@ public function notifySMS(int $userId, string $message)
 
 ```
 
-11.3) Modify the notify Method: In the current notify method, after sending the email notification, you can optionally trigger the notifySMS method to send the SMS.
+12.3) Modify the notify Method: In the current notify method, after sending the email notification, you can optionally trigger the notifySMS method to send the SMS.
 
 ```bash
 public function notify(int $userId, string $message, NotificationDataDTO $notificationData)
