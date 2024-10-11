@@ -67,7 +67,7 @@ class ScheduleVaccinationService implements ScheduleVaccinationInterface
                         ]);
     
                         // Update the user's status using the UserInterface
-                        $this->userService->updateUserStatus($userId, 'scheduled');
+                        $this->userService->updateUserStatus($userId, 'Scheduled');
 
                         // Send email notification about the vaccination schedule
                         $notificationData = new NotificationDataDTO($scheduledDate, $center->name);
