@@ -157,19 +157,6 @@ CACHE_STORE=database
 
 ### 11. Future Requirement: Adding SMS Notifications
 
-Extend the NotificationInterface: The current NotificationInterface supports email notifications. To include SMS, extend the interface to add an additional method for sending SMS notifications. This ensures that any service implementing the interface will also handle SMS.
-
-```bash
-interface NotificationInterface
-{
-    public function notify(int $userId, string $message, NotificationDataDTO $notificationData);
-    public function notifySMS(int $userId, string $message);
-}
-
-```
-
-### 11. Future Requirement: Adding SMS Notifications
-
 11.1) Extend the NotificationInterface: The current NotificationInterface supports email notifications. To include SMS, extend the interface to add an additional method for sending SMS notifications. This ensures that any service implementing the interface will also handle SMS.
 
 ```bash
