@@ -123,3 +123,32 @@ php artisan vaccination:remind
 
 ```
 
+
+### 9. Running the Queue Worker
+
+To send emails in the background, you need to run the queue worker. This will process any queued jobs, such as sending vaccination notifications:
+
+```bash
+php artisan queue:work
+```
+
+
+### 10. Ensure the Queue is Configured Properly
+
+   Make sure your `.env` file has the correct queue connection, like `database`, `redis`, etc.
+
+   Example for `database` queue driver:
+   ```bash
+   QUEUE_CONNECTION=database
+   ```
+
+
+### 11. Update .env for Cache
+
+Add or modify the following environment variables in your .env file to configure the cache driver
+
+   Example for `database` cache driver:
+   ```bash
+   CACHE_STORE=database
+   ```
+
