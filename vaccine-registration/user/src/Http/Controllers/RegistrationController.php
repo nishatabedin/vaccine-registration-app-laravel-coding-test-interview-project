@@ -24,8 +24,12 @@ class RegistrationController extends Controller
 
     public function register(UserRegistrationRequest $request, UserRegistrationAction $userRegistrationAction)
     {
-        $userRegistrationAction->execute($request);
-        return redirect()->back()->with('success', 'Registration successful. We will notify you via email.');
-
+        try {
+            $userRegistrationAction->execute($request);
+            return redirect()->back()->with('success', 'Registration successful. We will notify you via email.');
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'Registration failed. Please try again later.');
+        }
     }
+
 }
