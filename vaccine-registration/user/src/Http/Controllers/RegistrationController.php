@@ -8,6 +8,16 @@ use VaccineRegistration\User\Http\Requests\UserRegistrationRequest;
 
 class RegistrationController extends Controller
 {
+
+    /**
+     * Display the registration form.
+    */
+    public function showRegistrationForm()
+    {
+        return view('user::registration.form'); 
+    }
+
+
     public function register(UserRegistrationRequest $request, UserRegistrationAction $userRegistrationAction)
     {
         $userRegistrationAction->execute($request);

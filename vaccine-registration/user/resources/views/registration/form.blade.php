@@ -26,7 +26,7 @@
 
         /* Input field styling */
         input[type="text"],
-        input[type="email"], /* Added email field styling */
+        input[type="email"],
         select {
             width: 100%;
             padding: 10px;
@@ -78,6 +78,30 @@
         button[type="submit"]:hover {
             background-color: #218838;
         }
+
+        /* Extra button styling */
+        .search-button {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: white;
+            text-decoration: none;
+            border-radius: 4px;
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        .search-button:hover {
+            background-color: #0056b3;
+        }
+
+        /* Info box styling */
+        .info-box {
+            text-align: center;
+            margin-top: 30px;
+            font-size: 0.875rem;
+            color: #6c757d;
+        }
     </style>
 </head>
 <body>
@@ -88,6 +112,12 @@
         {{ session('success') }}
     </div>
 @endif
+
+<!-- Information box for users who are already registered -->
+<div class="info-box">
+    <p>If you are already registered, you can search for your vaccination status.</p>
+    <a href="/search" class="search-button">Search Vaccination Status</a>
+</div>
 
 <form action="/register" method="POST">
     @csrf
@@ -113,7 +143,7 @@
     <select name="vaccine_center_id">
         <option value="">Choose a center</option>
         <option value="1" {{ old('vaccine_center_id') == 1 ? 'selected' : '' }}>Center 1</option>
-      
+        <!-- Add other centers as needed -->
     </select>
     @error('vaccine_center_id')
         <div class="error">{{ $message }}</div>
@@ -121,5 +151,6 @@
 
     <button type="submit">Register</button>
 </form>
+
 </body>
 </html>
