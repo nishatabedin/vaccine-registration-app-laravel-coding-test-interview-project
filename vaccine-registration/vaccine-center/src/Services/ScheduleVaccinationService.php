@@ -33,6 +33,15 @@ class ScheduleVaccinationService implements ScheduleVaccinationInterface
         return VaccineCenter::find($vaccineCenterId);
     }
 
+
+
+
+    public function findVaccinationScheduleByUserId(int $userId): ?VaccinationSchedule
+    {
+        return VaccinationSchedule::where('user_id', $userId)->first();
+    }
+
+
    
 
     public function scheduleVaccination(int $userId, int $vaccineCenterId)

@@ -5,6 +5,7 @@ namespace VaccineRegistration\User\Enums;
 enum UserStatus: string
 {
     case REGISTERED = 'registered';
-    case SCHEDULED = 'scheduled';
-    case VACCINATED = 'vaccinated';
+    case NOT_SCHEDULED = 'Not scheduled';
+    case SCHEDULED = 'Scheduled';
+    case VACCINATED = 'Vaccinated';
 }

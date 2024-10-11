@@ -4,12 +4,25 @@ namespace VaccineRegistration\User\Services;
 
 use Exception;
 use ValueError;
+use Carbon\Carbon;
+use Illuminate\Support\Facades\Cache;
 use VaccineRegistration\User\Models\User;
 use VaccineRegistration\User\Enums\UserStatus;
 use VaccineRegistration\Common\Contracts\UserInterface;
+use VaccineRegistration\Common\Contracts\ScheduleVaccinationInterface;
 
 class UserService implements UserInterface
 {
+
+
+    protected $scheduleVaccinationService;
+
+    public function __construct(ScheduleVaccinationInterface $scheduleVaccinationService)
+    {
+        $this->scheduleVaccinationService = $scheduleVaccinationService;
+    }
+
+
     /**
      * Register a user
      *
@@ -57,6 +70,47 @@ class UserService implements UserInterface
             // Throw an exception if an invalid enum value is provided
             throw new Exception('Invalid status value.');
         }
+    }
+
+
+
+
+    /**
+     * Find user status by NID 
+     *
+     * @param string $nid
+     * @return array
+     */
+    public function checkUserStatusByNID(string $nid): array
+    {
+        // Get the cache TTL value from the environment, defaulting to 60 minutes if not set
+        $cacheTTL = env('CACHE_TTL', 60);
+
+        // Cache the user data along with their vaccination schedule
+        return Cache::remember("user_status_{$nid}", $cacheTTL, function () use ($nid) {
+           
+            $user = User::where('nid', $nid)->first();
+
+            if (!$user) {
+                return ['status' => 'Not registered', 'schedule' => null, 'registerLink' => url('/register')];
+            }
+
+            // Fetch the vaccination schedule via the ScheduleVaccinationInterface
+            $vaccinationSchedule = $this->scheduleVaccinationService->findVaccinationScheduleByUserId($user->id);
+
+            if (!$vaccinationSchedule) {
+                return ['status' => 'Not scheduled', 'schedule' => null];
+            }
+
+            // Check if the scheduled date has passed
+            $scheduledDate = Carbon::parse($vaccinationSchedule->scheduled_date);
+            if (Carbon::now()->gt($scheduledDate)) {
+                // The user is considered vaccinated if the scheduled date is passed
+                return ['status' => 'Vaccinated', 'schedule' => $scheduledDate];
+            }
+
+            return ['status' => 'Scheduled', 'schedule' => $scheduledDate];
+        });
     }
     
 }
