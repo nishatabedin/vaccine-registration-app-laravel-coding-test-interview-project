@@ -14,6 +14,7 @@ class VaccinationSchedule extends Model
 
     public function center()
     {
-        return $this->belongsTo(VaccineCenter::class);
+        return $this->belongsTo(VaccineCenter::class, 'vaccine_center_id');
     }
+
 }

@@ -1,0 +1,24 @@
+{
+	"name": "vaccine-registration/notification",
+	"description": "",
+	"type": "library",
+	"version": "1.0",
+	"license": "proprietary",
+	"require": {},
+	"autoload": {
+		"psr-4": {
+			"VaccineRegistration\\Notification\\": "src/",
+			"VaccineRegistration\\Notification\\Tests\\": "tests/",
+			"VaccineRegistration\\Notification\\Database\\Factories\\": "database/factories/",
+			"VaccineRegistration\\Notification\\Database\\Seeders\\": "database/seeders/"
+		}
+	},
+	"minimum-stability": "stable",
+	"extra": {
+		"laravel": {
+			"providers": [
+				"VaccineRegistration\\Notification\\Providers\\NotificationServiceProvider"
+			]
+		}
+	}
+}

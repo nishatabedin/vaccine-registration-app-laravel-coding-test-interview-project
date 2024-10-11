@@ -6,7 +6,9 @@ use Carbon\CarbonPeriod;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use VaccineRegistration\Common\Contracts\UserInterface;
+use VaccineRegistration\Common\DTO\NotificationDataDTO;
 use VaccineRegistration\VaccineCenter\Models\VaccineCenter;
+use VaccineRegistration\Common\Contracts\NotificationInterface;
 use VaccineRegistration\VaccineCenter\Models\VaccinationSchedule;
 use VaccineRegistration\VaccineCenter\Jobs\ScheduleVaccinationJob;
 use VaccineRegistration\Common\Contracts\ScheduleVaccinationInterface;
@@ -17,10 +19,12 @@ class ScheduleVaccinationService implements ScheduleVaccinationInterface
 {
 
     protected $userService;
+    protected $notificationService;
 
-    public function __construct(UserInterface $userService)
+    public function __construct(UserInterface $userService, NotificationInterface $notificationService)
     {
         $this->userService = $userService;
+        $this->notificationService = $notificationService;
     }
 
 
@@ -55,6 +59,11 @@ class ScheduleVaccinationService implements ScheduleVaccinationInterface
     
                         // Update the user's status using the UserInterface
                         $this->userService->updateUserStatus($userId, 'scheduled');
+
+                        // Send email notification about the vaccination schedule
+                        $notificationData = new NotificationDataDTO($scheduledDate, $center->name);
+                        $this->notificationService->notify($userId, 'Your vaccination is scheduled!', $notificationData);
+
                     });
                 } catch (Exception $e) {
                     // Handle the transaction failure, log the error
@@ -110,6 +119,41 @@ class ScheduleVaccinationService implements ScheduleVaccinationInterface
     {
         ScheduleVaccinationJob::dispatch($userId, $vaccineCenterId);
     }
+
+
+    public function sendVaccinationReminders()
+    {
+        $tomorrow = Carbon::tomorrow()->format('Y-m-d');
+       
+        VaccinationSchedule::with('center')  // Eager load the center relationship
+            ->where('scheduled_date', $tomorrow)
+            ->chunkById(100, function ($schedules) {
+              
+                foreach ($schedules as $schedule) {
+                    $user = $this->userService->findUserDataByUserId($schedule->user_id);
+                    
+                    // Log::info('Vaccination Schedule ID: ' . $schedule->id . ' - Center: ' . json_encode($schedule->center));
+
+                    if ($user && $schedule->center) {
+                        $notificationData = new NotificationDataDTO(
+                            $schedule->scheduled_date,
+                            $schedule->center->name
+                        );
+
+                        // Send reminder notification
+                        $this->notificationService->notify(
+                            $schedule->user_id,
+                            'Reminder: Your vaccination is tomorrow!',
+                            $notificationData
+                        );
+                    } else {
+                        Log::warning('Missing center or user for schedule ID: ' . $schedule->id);
+                    }
+                }
+            });
+    }
+
+
 
 }
 
