@@ -77,45 +77,35 @@ class UserService implements UserInterface
     public function checkUserStatusByNID(string $nid): array
     {
         $scheduleVaccinationService = app(ScheduleVaccinationInterface::class);
-
         // Get the cache TTL value from the environment, defaulting to 60 minutes if not set
         $cacheTTL = env('CACHE_TTL', 60)*60;
 
-        // Check if the cache exists before remembering
-        if (Cache::has("user_status_{$nid}")) {
-            // Log when the cache is hit
-            Log::debug("Cache hit for NID: {$nid}");
-            return Cache::get("user_status_{$nid}");
-        }
-
-        // Cache the user data along with their vaccination schedule if not already cached
+        $scheduleVaccinationService = app(ScheduleVaccinationInterface::class);
         return Cache::remember("user_status_{$nid}", $cacheTTL, function () use ($nid, $scheduleVaccinationService) {
-        
-            // Fetch the user by NID
             $user = User::where('nid', $nid)->first();
-            Log::debug('Cache User Status - User fetched:', ['user' => $user]);
-            
+            //Log::debug('Cache User Status - User fetched:', ['user' => $user]);
+        
             if (!$user) {
                 return ['status' => 'Not registered', 'schedule' => null, 'registerLink' => url('/')];
             }
-
-            // Fetch the vaccination schedule via the ScheduleVaccinationInterface
+        
             $vaccinationSchedule = $scheduleVaccinationService->findVaccinationScheduleByUserId($user->id);
-
+        
             if (!$vaccinationSchedule) {
                 return ['status' => 'Not scheduled', 'schedule' => null];
             }
-
-            // Check if the scheduled date has passed
+        
             $scheduledDate = Carbon::parse($vaccinationSchedule->scheduled_date);
             if (Carbon::now()->gt($scheduledDate)) {
-                // The user is considered vaccinated if the scheduled date is passed
                 return ['status' => 'Vaccinated', 'schedule' => $scheduledDate];
             }
-
+        
             return ['status' => 'Scheduled', 'schedule' => $scheduledDate];
         });
+
     }
+   
+    
 
     
 }

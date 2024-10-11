@@ -4,6 +4,8 @@ namespace VaccineRegistration\VaccineCenter\Providers;
 
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Console\Scheduling\Schedule;
+use VaccineRegistration\Common\Contracts\VaccineCenterInterface;
+use VaccineRegistration\VaccineCenter\Services\VaccineCenterService;
 use VaccineRegistration\Common\Contracts\ScheduleVaccinationInterface;
 use VaccineRegistration\VaccineCenter\Services\ScheduleVaccinationService;
 use VaccineRegistration\VaccineCenter\Console\Commands\SendVaccinationReminder;
@@ -13,6 +15,8 @@ class VaccineCenterServiceProvider extends ServiceProvider
 	public function register(): void
 	{
 		$this->app->bind(ScheduleVaccinationInterface::class, ScheduleVaccinationService::class);
+        $this->app->bind(VaccineCenterInterface::class, VaccineCenterService::class);
+        
 	}
 	
 	public function boot(): void

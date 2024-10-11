@@ -140,14 +140,18 @@
     @enderror
 
     <label for="vaccine_center_id">Select Vaccine Center</label>
-    <select name="vaccine_center_id">
+    <select name="vaccine_center_id" required>
         <option value="">Choose a center</option>
-        <option value="1" {{ old('vaccine_center_id') == 1 ? 'selected' : '' }}>Center 1</option>
-        <!-- Add other centers as needed -->
+        @foreach($vaccineCenters as $center)
+            <option value="{{ $center->id }}" {{ old('vaccine_center_id') == $center->id ? 'selected' : '' }}>
+                {{ $center->name }}
+            </option>
+        @endforeach
     </select>
     @error('vaccine_center_id')
         <div class="error">{{ $message }}</div>
     @enderror
+
 
     <button type="submit">Register</button>
 </form>
